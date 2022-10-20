@@ -696,7 +696,36 @@ $result = $conn -> query($sql);
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/chartjs.min.js"></script>
   <script>
+
+var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log("data", this.responseText);
+          let data = JSON.parse(this.responseText);
+          console.log("data", data)
+          // $(".error").hide();
+          // $(".loader").hide();
+          // $("#chart_data").show();
+          // $(".title").show();
+          displayChart(data);
+        } else {
+          // $(".loader").hide();
+          // $(".error").show();
+          console.log("Failed to fetch");
+        }
+      };
+      xmlhttp.open("GET", "../utils/server.php", true);
+      xmlhttp.send();
+
+
     function displayChart(data) {
+      let device = [];
+      let temp = [];
+
+      data.map((data) => {
+        device.push(data.device);
+        temp.push(data.temperature);
+      })
     var ctx1 = document.getElementById("chart-line").getContext("2d");
 
     var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
@@ -707,7 +736,7 @@ $result = $conn -> query($sql);
     new Chart(ctx1, {
       type: "line",
       data: {
-        labels: data,
+        labels: device,
         datasets: [{
           label: "Mobile apps",
           tension: 0.4,
@@ -717,7 +746,7 @@ $result = $conn -> query($sql);
           backgroundColor: gradientStroke1,
           borderWidth: 3,
           fill: true,
-          data: data,
+          data: temp,
           maxBarThickness: 6
 
         }],
@@ -781,24 +810,9 @@ $result = $conn -> query($sql);
 
   }
 
-    var xmlhttp = new XMLHttpRequest();
-      xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          let data = JSON.parse(this.responseText);
-          console.log("data", data)
-          // $(".error").hide();
-          // $(".loader").hide();
-          // $("#chart_data").show();
-          // $(".title").show();
-          displayChart(data);
-        } else {
-          // $(".loader").hide();
-          // $(".error").show();
-          console.log("Failed to fetch");
-        }
-      };
-      xmlhttp.open("GET", "../utils/server.php", true);
-      xmlhttp.send();
+    setInterval(() => {
+      window.location.reload();
+    }, 50000);
   </script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;

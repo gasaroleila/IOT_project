@@ -1,8 +1,8 @@
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "123";
-$dbname = "iot_project";
+$username = "benax_iot_root";
+$password = "Td(FAdeZ9xp3";
+$dbname = "benax_iot";
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -11,7 +11,7 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }else {
 
-$sql = "SELECT * from temperature_analysis";
+$sql = "SELECT * from leila_sensordata";
 $result = $conn -> query($sql);
 // $temp = $result -> fetch_assoc();
 }
